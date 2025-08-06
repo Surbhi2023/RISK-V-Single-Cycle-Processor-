@@ -1,23 +1,22 @@
-module ALUDecoder(
-    input [6:0] op,
-    input [2:0] funct3,
-    input funct7,
-    input [1:0] ALUop,
-    output reg [2:0] ALUControl
-);
-    always @(*) begin
-        if (ALUop == 2'b00) begin
-            ALUControl <= 3'b000; // ADD
-        end else if (ALUop == 2'b01) begin
-            ALUControl <= 3'b001; // SUB
-        end else if (ALUop == 2'b10) begin
-            case({funct7, funct3, op})
-                10'b0000000_000: ALUControl <= 3'b000;
-                10'b0100000_000: ALUControl <= 3'b001;
-                10'b0000000_111: ALUControl <= 3'b011;
-                10'b0000000_110: ALUControl <= 3'b010;
-                default: ALUControl <= 3'bxxx;
-            endcase
-        end
+module RegFile(
+input WE3, clk,
+input [4:0] A1,
+input [4:0] A2,
+input [4:0] A3,
+input [31:0] WD3,
+output reg [31:0] RD1, 
+output reg [31:0] RD2
+    );
+    
+    reg [31:0] register_file[31:0];
+    
+    always@(posedge clk)
+    if (WE3)
+        register_file[A3] <= WD3;
+    
+    always@(*) begin
+        RD1 = (A1==1)? register_file[A1]:0;
+        RD2 = (A2==1)? register_file[A2]:0;
     end
+    
 endmodule
