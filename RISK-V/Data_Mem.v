@@ -16,7 +16,6 @@ module Data_Memory(clk, reset, MemWrite, MemRead, read_address, Write_data, MemD
       else if(MemWrite) begin
         D_Memory[read_address] <= Write_data;
       end
-    end
-  assign MemData_out = (MemRead) ? D_Memory[read_address] : 32'b00;
+      assign MemData_out = (MemRead) ? D_Memory[read_address] : 32'b00;//when memread high read data from memory at read from D_memory otherwise output 0
 endmodule
   
